@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Echo State Networks for Text Classification &mdash; esntorch 1.0.5 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="EsnTorch" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> esntorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Echo State Networks for Text Classification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#model">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training">Training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_ESN.html">Tutorial 1: Echo State Networks for Text Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial_DeepESN.html">Tutorial 2: Deep Echo State Networks for Text Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Architecture</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">esntorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Echo State Networks for Text Classification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/esn_description.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="echo-state-networks-for-text-classification">
+<span id="esn-description"></span><h1>Echo State Networks for Text Classification<a class="headerlink" href="#echo-state-networks-for-text-classification" title="Permalink to this headline">¶</a></h1>
+<section id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>An <em>echo state network (ESN)</em> is a recurrent neural network composed of
+<span class="math notranslate nohighlight">\(N_u\)</span> input units, <span class="math notranslate nohighlight">\(N_x\)</span> hidden units composing the
+so-called <em>reservoir</em>, and <span class="math notranslate nohighlight">\(N_y\)</span> output units. The input units
+project onto the reservoir <span class="math notranslate nohighlight">\((\mathbf{W_{in}})\)</span>, which is itself
+recurrently connected <span class="math notranslate nohighlight">\((\mathbf{W_{res}})\)</span>, and projects onto the
+output units <span class="math notranslate nohighlight">\((\mathbf{W_{out}})\)</span>.</p>
+<a class="reference internal image-reference" href="_images/esn.png"><img alt="An echo state network (ESN)." class="align-center" src="_images/esn.png" style="width: 300px;" /></a>
+<p>Here, we consider <em>Leaky Integrator ESNs</em>. The inputs, reservoir state
+and outputs of the network at time <span class="math notranslate nohighlight">\(t &gt; 0\)</span> are denoted by
+<span class="math notranslate nohighlight">\(\mathbf{u}(t) \in \mathbb{R}^{N_u}\)</span>,
+<span class="math notranslate nohighlight">\(\mathbf{x}(t) \in \mathbb{R}^{N_x}\)</span> and
+<span class="math notranslate nohighlight">\(\mathbf{y}(t) \in \mathbb{R}^{N_y}\)</span>, respectively. The state
+<span class="math notranslate nohighlight">\(\mathbf{x}(0)\)</span> is the <em>initial state</em>. The dynamics of the
+network is then given by the following equations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{\tilde{x}}(t+1) &amp; = f_{res} \left( \mathbf{W_{in}} [\mathbf{1}, \mathbf{u}(t+1)] + \mathbf{W_{res}} \mathbf{x}(t) \right) \\
+\mathbf{x}(t+1)         &amp; = (1-\alpha) \mathbf{x}(t) + \alpha \mathbf{\tilde{x}}(t+1) \\
+\mathbf{y}(t+1)         &amp; = f_{out} \left( \mathbf{W_{out}} [\mathbf{1}, \mathbf{x}(t+1)] \right)\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\([\mathbf{a}, \mathbf{b}]\)</span> denotes the concatenation of
+<span class="math notranslate nohighlight">\(\mathbf{a}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{x}(0)\)</span> is the
+<em>initial state</em>, <span class="math notranslate nohighlight">\(f_{res}\)</span> and <span class="math notranslate nohighlight">\(f_{out}\)</span> are the <em>activation
+functions</em> of the reservoir and output cells (applied component-wise),
+and <span class="math notranslate nohighlight">\(\alpha\)</span> is the <em>leaking rate</em> (<span class="math notranslate nohighlight">\(0 \leq \alpha \leq 1\)</span>).</p>
+<p>The leaking rate controls the update speed of the reservoir dynamics.
+The input weights <span class="math notranslate nohighlight">\(\mathbf{W_{in}}\)</span> are initialized randomly from
+a uniform distribution <span class="math notranslate nohighlight">\(\mathcal{U}(-a,a)\)</span>, where <span class="math notranslate nohighlight">\(a\)</span> is the
+<em>input scaling</em>, and kept fixed during the whole training process. The
+input scaling determines the extent of nonlinearity of the reservoir
+response. The reservoir weights <span class="math notranslate nohighlight">\(\mathbf{W_{res}}\)</span> are drawn from
+the uniform or Gaussian distribution, then randomly set to <span class="math notranslate nohighlight">\(0\)</span>
+with a given <em>sparsity rate</em>, and finally rescaled in order to have a
+specific <em>spectral radius</em> <span class="math notranslate nohighlight">\(\rho\)</span> (usually, we choose
+<span class="math notranslate nohighlight">\(\rho &lt; 1\)</span>). The reservoir weights <span class="math notranslate nohighlight">\(\mathbf{W_{res}}\)</span> are
+also kept fixed during training. Only the output
+<span class="math notranslate nohighlight">\(\mathbf{W_{out}}\)</span> are trainable.</p>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h2>
+<p>In an ESN, only the output weights <span class="math notranslate nohighlight">\(\mathbf{W_{out}}\)</span> are trained.
+The training process can be described as follows. Consider some training
+set <span class="math notranslate nohighlight">\(\mathcal{S}\)</span> composed of temporal inputs and associated
+targets, i.e.,</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{S} = \Big\{ \big( \mathbf{u}(t), \mathbf{y^{target}}(t) \big) : t = 1, \dots, T \Big\}.\]</div>
+<p>Let <span class="math notranslate nohighlight">\(\mathbf{x}(1), \dots ,\mathbf{x}(T)\)</span> and
+<span class="math notranslate nohighlight">\(\mathbf{y}(1), \dots ,\mathbf{y}(T)\)</span> be the successive reservoir
+states and predictions obtained when running the ENS on inputs
+<span class="math notranslate nohighlight">\(\mathbf{u}(1), \dots ,\mathbf{u}(T)\)</span>, respectively. Then, the
+output weights <span class="math notranslate nohighlight">\(\mathbf{W_{out}}\)</span> are computed by minimizing some
+cost function <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> of the predictions and targets via any
+desired learning algorithm – e.g., a simple Ridge regression. Usually,
+some initial transient of the ESN dynamics is used as a warm-up of the
+reservoir, and <span class="math notranslate nohighlight">\(\mathbf{W_{out}}\)</span> is computed on the basis of the
+remaining suffix of collected states, predictions and and targets.</p>
+<p>Classical temporal tasks involve time series where each point is
+associated with a corresponding target. By contrast, in the present
+case, the task comprises <em>multiple</em> time series as inputs – the
+successive embedded texts – each of which being associated with only
+<em>one</em> output target – its corresponding class. We propose a customized
+training process targeted at this <em>many-to-one</em> paradigm.</p>
+<dl class="simple">
+<dt>Our training paradigm consist of the four following steps:</dt><dd><ol class="arabic simple">
+<li><p>Embed the successive texts (FastTest, GloVe, etc.);</p></li>
+<li><p>Pass the embedded texts into the ESN;</p></li>
+<li><p>Pool the reservoir states associated to the successive texts (last, mean, etc.);</p></li>
+<li><p>Learn the association between the polled states and associated targets.</p></li>
+</ol>
+</dd>
+</dl>
+<p>The training process is illustrated in the figure below.</p>
+<a class="reference internal image-reference" href="_images/training.png"><img alt="Customized training paradigm of an echo state network." class="align-center" src="_images/training.png" style="width: 500px;" /></a>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="EsnTorch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2021, Playtika Ltd.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+*.DS_Store
+*.pyc
+*.ipynb_checkpoints
+*.pytest_cache
+*.idea
+*.pt
+*.arrow
+examples/cache_dir/
+notebooks_paper_2021/
+.vscode/
